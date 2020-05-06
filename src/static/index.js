@@ -1,2 +1,2 @@
-// 🖼 FOR frontend.
-hello;
+// eslint-disable-next-line no-undef
+io("/");
