@@ -13,4 +13,10 @@ app.get("/", (req, res) => res.render("home"));
 const handleListening = () =>
   console.log(` ✅ Server Running : http://localhost:${PORT}`);
 
-app.listen(PORT, handleListening);
+const server = app.listen(PORT, handleListening);
+
+const io = socketIO(server);
+
+// socketio 서버를 express서버 위에 올리고, 다음 url을 브라우저에서 입력해보면, 프런트엔드 코드가 출력되는 것을 확인가능
+// localhost:4000/socket.io/socket.io.js
+// 이 코드가, 백엔드와 프런트엔드를 소통하는 역할을 함.
