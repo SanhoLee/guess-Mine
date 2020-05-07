@@ -23,10 +23,6 @@ const io = socketIO.listen(server);
 // localhost:4000/socket.io/socket.io.js
 // 이 코드가, 백엔드와 프런트엔드를 소통하는 역할을 함.
 
-let sockets = [];
-
 io.on("connection", (socket) => {
-  sockets.push(socket.id);
+  socket.on("helloGuys", () => console.log("the clien said Hello"));
 });
-
-setInterval(() => console.log(sockets), 1000);
