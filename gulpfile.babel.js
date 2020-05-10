@@ -5,6 +5,7 @@ import autoprefixer from "gulp-autoprefixer";
 // 여러개의 브라우저에서 호환가능하게 해줌.
 import minifyCSS from "gulp-csso";
 import bro from "gulp-browserify";
+import babelify from "babelify";
 import del from "del";
 
 sass.compiler = require("node-sass");
@@ -26,7 +27,14 @@ const paths = {
 const clean = () => del(["src/static"]);
 
 const js = () =>
-  gulp.src(paths.js.src).pipe(bro()).pipe(gulp.dest(paths.js.dest));
+  gulp
+    .src(paths.js.src)
+    .pipe(
+      bro({
+        transform: babelify.configure({ presets: ["@babel/preset-env"] }),
+      })
+    )
+    .pipe(gulp.dest(paths.js.dest));
 
 const styles = () =>
   gulp
@@ -46,6 +54,8 @@ const watchFile = () => {
 };
 
 const dev = gulp.series(clean, styles, js, watchFile);
+
+export const build = gulp.series(clean, styles, js);
 
 export default dev;
 // export default하면, gulpfile을 실행시키는걸로 바로 , dev를 실행시키도록 되어있음.
