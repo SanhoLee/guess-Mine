@@ -2,6 +2,7 @@
 // JSON.stringify를 하면, javascript 오브젝트를 JSON string 데이터 형태로 바꿔준다.
 const events = {
   setNickname: "setNickname",
+  newUser: "newUser",
 };
 
 export default events;
