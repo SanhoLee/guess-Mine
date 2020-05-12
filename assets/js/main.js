@@ -1,17 +1,26 @@
-import { handleMessageNotif } from "./chat";
+const body = document.querySelector("body");
+const loginForm = document.getElementById("jsLogin");
 
-// eslint-disable-next-line no-undef
-const socket = io("/");
+const NICKNAME = "nickname";
+const LOGGED_OUT = "loggedOut";
+const LOGGED_IN = "loggedIn";
 
-// console에서 아래 함수를 실행시키면, 서버로 전송되고 메세지를 보내거나 닉네임을 설정한다.
-// emit(event, data) 형태로, 백엔드 서버로 데이터도 같이 전송한다.
-function sendMessage(message) {
-  socket.emit("newMessage", { message });
-  console.log(`You : ${message}`);
+const nickname = localStorage.getItem(NICKNAME);
+
+if (nickname === null) {
+  body.className = LOGGED_OUT;
+} else {
+  body.className = LOGGED_IN;
 }
 
-function setNickname(nickname) {
-  socket.emit("setNickname", { nickname });
-}
+const handleFormSubmit = (e) => {
+  e.preventDefault();
+  const input = loginForm.querySelector("input");
+  const { value } = input;
+  input.value = "";
+  localStorage.setItem(NICKNAME, value);
+};
 
-socket.on("messageNotif", handleMessageNotif);
+if (loginForm) {
+  loginForm.addEventListener("submit", handleFormSubmit);
+}
