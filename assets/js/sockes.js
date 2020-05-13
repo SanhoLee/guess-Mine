@@ -1,4 +1,4 @@
-import { handleNewUser } from "./notifications";
+import { handleNewUser, handleDisconneted } from "./notifications";
 
 let socket = null;
 
@@ -13,4 +13,5 @@ export const initSockets = (aSocket) => {
   //   현재 socket을 글로벌 변수로 업데이트 해줌
   updateSocket(aSocket);
   aSocket.on(events.newUser, handleNewUser);
+  aSocket.on(events.disconnected, handleDisconneted);
 };
