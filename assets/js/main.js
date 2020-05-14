@@ -2,4 +2,4 @@
 
 import "./sockes";
 import "./login";
-import "./notifications";
+import "./chat";
