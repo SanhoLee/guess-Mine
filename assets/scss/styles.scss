@@ -4,6 +4,7 @@
 @import "login";
 @import "notification";
 @import "chat";
+@import "paint";
 
 * {
   box-sizing: border-box;
@@ -26,7 +27,8 @@ body {
   align-items: center;
   min-height: 100%;
   .loginBox,
-  .gameContainer {
+  .gameContainer,
+  .paintContainer {
     display: none;
   }
   &.loggedOut {
@@ -35,7 +37,8 @@ body {
     }
   }
   &.loggedIn {
-    .gameContainer {
+    .gameContainer,
+    .paintContainer {
       display: block;
     }
   }
