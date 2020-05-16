@@ -29,6 +29,7 @@ const handleFormSubmit = (event) => {
   const { value } = input;
   input.value = "";
   localStorage.setItem(NICKNAME, value);
+  body.className = LOGGED_IN;
   login(value);
 };
 

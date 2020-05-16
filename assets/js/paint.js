@@ -25,21 +25,26 @@ ctx.lineWidth = 2.5;
 let painting = false;
 let filling = false;
 
-function stopPainting() {
+const stopPainting = () => {
   painting = false;
-}
+};
 
 const beginPath = (x, y) => {
   ctx.beginPath();
   ctx.moveTo(x, y);
 };
 
-const strokePath = (x, y) => {
+const strokePath = (x, y, color = null) => {
+  let currentColor = ctx.strokeStyle;
+  if (color != null) {
+    ctx.strokeStyle = color;
+  }
   ctx.lineTo(x, y);
   ctx.stroke();
+  ctx.strokeStyle = currentColor;
 };
 
-function onMouseMove(event) {
+const onMouseMove = (event) => {
   const x = event.offsetX;
   const y = event.offsetY;
 
@@ -48,30 +53,34 @@ function onMouseMove(event) {
     getSocket().emit(window.events.beginPath, { x, y });
   } else {
     strokePath(x, y);
-    getSocket().emit(window.events.strokePath, { x, y });
+    getSocket().emit(window.events.strokePath, {
+      x,
+      y,
+      color: ctx.strokeStyle,
+    });
   }
-}
+};
 
-function handleColorClick(event) {
+const handleColorClick = (event) => {
   const Color = event.target.style.backgroundColor;
   ctx.strokeStyle = Color;
   ctx.fillStyle = Color;
-}
+};
 
-function onMouseDown(event) {
+const onMouseDown = (event) => {
   painting = true;
-}
+};
 
-function startPainting() {
+const startPainting = () => {
   painting = true;
-}
+};
 
-function handleRangeChange(event) {
+const handleRangeChange = (event) => {
   const size = event.target.value;
   ctx.lineWidth = size;
-}
+};
 
-function handleModeClick() {
+const handleModeClick = () => {
   if (filling === true) {
     mode.innerText = "Fill";
     filling = false;
@@ -79,27 +88,37 @@ function handleModeClick() {
     mode.innerText = "Paint";
     filling = true;
   }
-}
+};
 
-function handleCanvasClick() {
-  if (filling === true) {
-    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+const fill = (color = null) => {
+  let currentColor = ctx.fillStyle;
+  if (color != null) {
+    ctx.fillStyle = color;
   }
-}
+  ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  ctx.fillStyle = currentColor;
+};
 
-function handleCM(event) {
+const handleCanvasClick = () => {
+  if (filling === true) {
+    fill();
+    getSocket().emit(window.events.fill, { color: ctx.fillStyle });
+  }
+};
+
+const handleCM = (event) => {
   event.preventDefault();
-}
+};
 
-function handleSaveClick() {
+const handleSaveClick = () => {
   const image = canvas.toDataURL();
   const link = document.createElement("a");
   link.href = image;
   link.download = "PaintJS_fwanggus";
   link.click();
-}
+};
 
-function handleRefresh() {
+const handleRefresh = () => {
   const result = window.confirm("ARE YOU SURE REFRESHING ALL STUFF? ");
 
   if (result) {
@@ -116,15 +135,15 @@ function handleRefresh() {
   } else {
     console.log("you clicked 'cancel' !");
   }
-}
+};
 
-function confirmSaveFile() {
+const confirmSaveFile = () => {
   const confirmSave = window.confirm("ARE YOU SURE SAVING THIS PAINTING ? ");
   if (confirmSave) {
     handleSaveClick();
   } else {
   }
-}
+};
 
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
@@ -156,4 +175,5 @@ if (refreshBtn) {
 }
 
 export const handleBeganPath = ({ x, y }) => beginPath(x, y);
-export const handleStrokedPath = ({ x, y }) => strokePath(x, y);
+export const handleStrokedPath = ({ x, y, color }) => strokePath(x, y, color);
+export const handleFilled = ({ color }) => fill(color);
