@@ -1,3 +1,5 @@
+import { getSocket } from "./sockets";
+
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
@@ -27,16 +29,26 @@ function stopPainting() {
   painting = false;
 }
 
+const beginPath = (x, y) => {
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+};
+
+const strokePath = (x, y) => {
+  ctx.lineTo(x, y);
+  ctx.stroke();
+};
+
 function onMouseMove(event) {
   const x = event.offsetX;
   const y = event.offsetY;
 
   if (!painting) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
+    beginPath(x, y);
+    getSocket().emit(window.events.beginPath, { x, y });
   } else {
-    ctx.lineTo(x, y);
-    ctx.stroke();
+    strokePath(x, y);
+    getSocket().emit(window.events.strokePath, { x, y });
   }
 }
 
@@ -142,3 +154,6 @@ if (saveBtn) {
 if (refreshBtn) {
   refreshBtn.addEventListener("click", handleRefresh);
 }
+
+export const handleBeganPath = ({ x, y }) => beginPath(x, y);
+export const handleStrokedPath = ({ x, y }) => strokePath(x, y);

@@ -1,6 +1,6 @@
 // It is compiled static main.js and go to home.pug
 
-import "./sockes";
+import "./sockets";
 import "./login";
 import "./chat";
 import "./paint";

@@ -1,4 +1,4 @@
-import { getSocket } from "./sockes";
+import { getSocket } from "./sockets";
 
 const message = document.getElementById("jsMessage");
 const sendMsg = document.getElementById("jsSendMsg");

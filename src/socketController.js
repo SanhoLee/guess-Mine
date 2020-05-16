@@ -1,5 +1,6 @@
 import events from "./events";
 
+// Subsriber...
 const socketController = (socket) => {
   const broadcast = (event, data) => socket.broadcast.emit(event, data);
   socket.on(events.setNickname, ({ nickname }) => {
@@ -12,6 +13,12 @@ const socketController = (socket) => {
   });
   socket.on(events.sendMsg, ({ message }) => {
     broadcast(events.newMsg, { message, nickname: socket.nickname });
+  });
+  socket.on(events.beginPath, ({ x, y }) => {
+    broadcast(events.beganPath, { x, y });
+  });
+  socket.on(events.strokePath, ({ x, y }) => {
+    broadcast(events.strokedPath, { x, y });
   });
 };
 
