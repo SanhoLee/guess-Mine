@@ -1,7 +1,7 @@
 import { handleNewUser, handleDisconnected } from "./notifications";
 import { handleNewMessage } from "./chat";
 import { handleBeganPath, handleStrokedPath, handleFilled } from "./paint";
-import { handlePlayerUpdate } from "./player";
+import { handlePlayerUpdate, handleGameStarted } from "./player";
 
 let socket = null;
 
@@ -18,6 +18,8 @@ export const initSockets = (aSocket) => {
   socket.on(events.strokedPath, handleStrokedPath);
   socket.on(events.filled, handleFilled);
   socket.on(events.playerUpdate, handlePlayerUpdate);
+  // 리더를 제외한 유저에게만 아래 gameStarted를 보내줘야함.
+  socket.on(events.gameStarted, handleGameStarted);
 };
 
 // 상대방 유저에게 연결해서 뭔가 액션을 표시하기 위해서는, initSockets에서 window.events로 들어오는 이벤트를 통해서 전달되야한다.

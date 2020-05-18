@@ -1,3 +1,5 @@
+import { disableCanvas, hideControls } from "./paint";
+
 const board = document.getElementById("jsPBoard");
 
 const addPlayers = (players) => {
@@ -10,3 +12,12 @@ const addPlayers = (players) => {
 };
 
 export const handlePlayerUpdate = ({ sockets }) => addPlayers(sockets);
+export const handleGameStarted = () => {
+  // function called below is fired for user who is not leader.
+  // filtered socket is needed.
+
+  // if (leader.id != socket.id) {
+  disableCanvas();
+  hideControls();
+  // }
+};

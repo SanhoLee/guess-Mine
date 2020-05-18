@@ -3,6 +3,7 @@ import { getSocket } from "./sockets";
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
+const controls = document.getElementById("jsControls");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 const saveBtn = document.getElementById("jsSave");
@@ -145,14 +146,21 @@ const confirmSaveFile = () => {
   }
 };
 
-if (canvas) {
+export const disableCanvas = () => {
+  canvas.removeEventListener("mousemove", onMouseMove);
+  canvas.removeEventListener("mousedown", startPainting);
+  canvas.removeEventListener("mouseleave", stopPainting);
+  canvas.removeEventListener("mouseup", stopPainting);
+  canvas.removeEventListener("click", handleCanvasClick);
+};
+
+export const enableCanvas = () => {
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("click", handleCanvasClick);
-  canvas.addEventListener("contextmenu", handleCM);
-}
+};
 
 Array.from(colors).forEach((potato) => {
   potato.addEventListener("click", handleColorClick);
@@ -177,3 +185,11 @@ if (refreshBtn) {
 export const handleBeganPath = ({ x, y }) => beginPath(x, y);
 export const handleStrokedPath = ({ x, y, color }) => strokePath(x, y, color);
 export const handleFilled = ({ color }) => fill(color);
+
+export const hideControls = () => (controls.style.opacity = 0);
+export const showControls = () => (controls.style.opatcity = 1);
+
+if (canvas) {
+  enableCanvas();
+  canvas.addEventListener("contextmenu", handleCM);
+}
