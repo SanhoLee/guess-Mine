@@ -13,6 +13,7 @@ const events = {
   strokedPath: "strokedPath",
   fill: "fill",
   filled: "filled",
+  playerUpdate: "playerUpadate",
 };
 
 export default events;

@@ -1,15 +1,23 @@
 import events from "./events";
 
 // Subsriber...
-const socketController = (socket) => {
+const socketController = (socket, io) => {
+  let sockets = [];
+
   const broadcast = (event, data) => socket.broadcast.emit(event, data);
+  const superBroadcast = (event, data) => io.emit(event, data);
+  const sendPlayerUpdate = () =>
+    superBroadcast(events.playerUpdate, { sockets });
   socket.on(events.setNickname, ({ nickname }) => {
     socket.nickname = nickname;
-    // socket --> object라서 아무거나 추가할수 있음. 즉, nickname field를 추가해서 받아온 nickname value를 할당해주는 구조.
+    sockets.push({ id: socket.id, points: 0, nickname: socket.nickname });
     broadcast(events.newUser, { nickname });
+    sendPlayerUpdate();
   });
   socket.on(events.disconnect, () => {
+    sockets = sockets.filter((potato) => potato.id != socket.id);
     broadcast(events.disconnected, { nickname: socket.nickname });
+    sendPlayerUpdate();
   });
   socket.on(events.sendMsg, ({ message }) => {
     broadcast(events.newMsg, { message, nickname: socket.nickname });
