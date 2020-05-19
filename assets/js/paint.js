@@ -187,9 +187,11 @@ export const handleStrokedPath = ({ x, y, color }) => strokePath(x, y, color);
 export const handleFilled = ({ color }) => fill(color);
 
 export const hideControls = () => (controls.style.opacity = 0);
-export const showControls = () => (controls.style.opatcity = 1);
+export const showControls = () => (controls.style.opacity = 1);
+export const resetCanvas = () => fill("#fff");
 
 if (canvas) {
   enableCanvas();
+  hideControls();
   canvas.addEventListener("contextmenu", handleCM);
 }

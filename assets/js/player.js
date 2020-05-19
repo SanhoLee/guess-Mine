@@ -1,6 +1,18 @@
-import { disableCanvas, hideControls } from "./paint";
+import {
+  disableCanvas,
+  hideControls,
+  enableCanvas,
+  showControls,
+  resetCanvas,
+} from "./paint";
 
 const board = document.getElementById("jsPBoard");
+const notifs = document.getElementById("jsNotifs");
+
+const setNotif = (text) => {
+  notifs.innerText = "";
+  notifs.innerText = text;
+};
 
 const addPlayers = (players) => {
   board.innerHTML = "";
@@ -13,11 +25,20 @@ const addPlayers = (players) => {
 
 export const handlePlayerUpdate = ({ sockets }) => addPlayers(sockets);
 export const handleGameStarted = () => {
-  // function called below is fired for user who is not leader.
-  // filtered socket is needed.
-
-  // if (leader.id != socket.id) {
+  setNotif("");
   disableCanvas();
   hideControls();
-  // }
+};
+export const handleLeaderNotif = ({ word }) => {
+  setNotif("");
+  enableCanvas();
+  showControls();
+  notifs.innerText = `You are Leader, Paint : ${word}`;
+};
+
+export const handleGameEnded = () => {
+  setNotif("Game Ended ! ");
+  disableCanvas();
+  hideControls();
+  resetCanvas();
 };
