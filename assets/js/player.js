@@ -5,6 +5,7 @@ import {
   showControls,
   resetCanvas,
 } from "./paint";
+import { disableChat } from "./chat";
 
 const board = document.getElementById("jsPBoard");
 const notifs = document.getElementById("jsNotifs");
@@ -30,9 +31,11 @@ export const handleGameStarted = () => {
   hideControls();
 };
 export const handleLeaderNotif = ({ word }) => {
+  // This is only for leader Browser.
   setNotif("");
   enableCanvas();
   showControls();
+  disableChat();
   notifs.innerText = `You are Leader, Paint : ${word}`;
 };
 
@@ -42,3 +45,5 @@ export const handleGameEnded = () => {
   hideControls();
   resetCanvas();
 };
+
+export const handleGameStarting = () => setNotif("Game will be starting soon.");
