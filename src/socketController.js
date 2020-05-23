@@ -39,7 +39,7 @@ const socketController = (socket, io) => {
           // it could be deleted by clearTimeout(ThatId) method.
           timerTime = 0;
           timerInterval = setInterval(timeReduce, 1000);
-        }, 2000);
+        }, 5000);
       }
     }
   };
@@ -49,7 +49,10 @@ const socketController = (socket, io) => {
     superBroadcast(events.gameEnded, { TOTAL_TIME });
     if (timeout != null) {
       clearTimeout(timeout);
+    }
+    if (timerInterval != null) {
       clearInterval(timerInterval);
+      timerTime = 0;
     }
     setTimeout(startGame, 2000);
   };

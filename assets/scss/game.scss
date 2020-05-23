@@ -1,0 +1,16 @@
+.gameContainer {
+  margin-top: 50px;
+  height: 100%;
+  width: 200px;
+  .statusNotif {
+    display: grid;
+    grid-template-columns: 1fr 10px 1fr;
+    padding: 10px 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 36px rgba(2, 2, 2, 0.1), 0 5px 15px rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    span {
+      justify-self: center;
+    }
+  }
+}

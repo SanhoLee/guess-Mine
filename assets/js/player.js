@@ -12,22 +12,33 @@ const notifs = document.getElementById("jsNotifs");
 const statusTime = document.getElementById("jsStatusTime");
 
 const setNotif = (text) => {
-  notifs.innerText = "";
+  notifs.innerText = " ";
   notifs.innerText = text;
+};
+
+const setTimerTime = (text) => {
+  statusTime.innerText = "";
+  statusTime.innerText = text;
 };
 
 const addPlayers = (players) => {
   board.innerHTML = "";
   players.forEach((player) => {
     const playerElement = document.createElement("span");
-    playerElement.innerText = `${player.nickname} : ${player.points}`;
+    playerElement.innerText = `${player.nickname} 🤑 ${player.points}`;
     board.appendChild(playerElement);
   });
 };
 
-export const handlePlayerUpdate = ({ sockets }) => addPlayers(sockets);
+export const handlePlayerUpdate = ({ sockets }) => {
+  if (sockets.length === 1) {
+    setNotif("Waiting Painters 👨🏻‍🎨👩🏻‍🎨 ");
+  }
+  hideControls();
+  addPlayers(sockets);
+};
 export const handleGameStarted = () => {
-  setNotif("");
+  setNotif("Guess What ? ");
   disableCanvas();
   hideControls();
   enableChat();
@@ -46,12 +57,11 @@ export const handleGameEnded = ({ TOTAL_TIME }) => {
   disableCanvas();
   hideControls();
   resetCanvas();
-  statusTime.innerText = TOTAL_TIME;
+  setTimerTime(TOTAL_TIME);
 };
 
 export const handleGameStarting = () => setNotif("Game will be starting soon.");
 
 export const handleTimerRunning = ({ sendTime }) => {
-  statusTime.innerText = "";
-  statusTime.innerText = sendTime;
+  setTimerTime(sendTime);
 };

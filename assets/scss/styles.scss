@@ -6,7 +6,7 @@
 @import "chat";
 @import "paint";
 @import "board";
-@import "status";
+@import "game";
 
 * {
   box-sizing: border-box;
@@ -28,10 +28,12 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100%;
-  padding: 20px 0px;
+  height: 700px;
+  padding-top: 30px;
   .loginBox,
   .gameContainer,
-  .paintContainer {
+  .paintContainer,
+  .player__board {
     display: none;
   }
   &.loggedOut {
@@ -41,7 +43,8 @@ body {
   }
   &.loggedIn {
     .gameContainer,
-    .paintContainer {
+    .paintContainer,
+    .player__board {
       display: block;
     }
   }

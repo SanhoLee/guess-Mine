@@ -192,6 +192,6 @@ export const resetCanvas = () => fill("#fff");
 
 if (canvas) {
   enableCanvas();
-  hideControls();
+  // hideControls();
   canvas.addEventListener("contextmenu", handleCM);
 }
