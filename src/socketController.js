@@ -1,11 +1,15 @@
 import events from "./events";
 import { chooseWord } from "./word";
 
+const TOTAL_TIME = 20;
+
 let sockets = [];
 let inProgress = false;
 let word = null;
 let leader = null;
 let timeout = null;
+let timerTime = 0;
+let timerInterval = null;
 
 const chooseLeader = () => sockets[Math.floor(Math.random() * sockets.length)];
 
@@ -15,6 +19,11 @@ const socketController = (socket, io) => {
   const superBroadcast = (event, data) => io.emit(event, data);
   const sendPlayerUpdate = () =>
     superBroadcast(events.playerUpdate, { sockets });
+  const timeReduce = () => {
+    timerTime += 1;
+    const sendTime = TOTAL_TIME - timerTime;
+    superBroadcast(events.timerRunning, { sendTime });
+  };
   const startGame = () => {
     if (sockets.length > 1) {
       if (inProgress === false) {
@@ -25,9 +34,11 @@ const socketController = (socket, io) => {
         setTimeout(() => {
           superBroadcast(events.gameStarted);
           io.to(leader.id).emit(events.leaderNotif, { word });
-          timeout = setTimeout(endGame, 30000);
+          timeout = setTimeout(endGame, 1000 * TOTAL_TIME);
           // timeout will be has specific id for setTimeout.
           // it could be deleted by clearTimeout(ThatId) method.
+          timerTime = 0;
+          timerInterval = setInterval(timeReduce, 1000);
         }, 2000);
       }
     }
@@ -35,9 +46,10 @@ const socketController = (socket, io) => {
 
   const endGame = () => {
     inProgress = false;
-    superBroadcast(events.gameEnded);
+    superBroadcast(events.gameEnded, { TOTAL_TIME });
     if (timeout != null) {
       clearTimeout(timeout);
+      clearInterval(timerInterval);
     }
     setTimeout(startGame, 2000);
   };

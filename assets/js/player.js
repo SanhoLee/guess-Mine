@@ -9,6 +9,7 @@ import { disableChat, enableChat } from "./chat";
 
 const board = document.getElementById("jsPBoard");
 const notifs = document.getElementById("jsNotifs");
+const statusTime = document.getElementById("jsStatusTime");
 
 const setNotif = (text) => {
   notifs.innerText = "";
@@ -40,11 +41,17 @@ export const handleLeaderNotif = ({ word }) => {
   notifs.innerText = `You are Leader, Paint : ${word}`;
 };
 
-export const handleGameEnded = () => {
+export const handleGameEnded = ({ TOTAL_TIME }) => {
   setNotif("Game Ended ! ");
   disableCanvas();
   hideControls();
   resetCanvas();
+  statusTime.innerText = TOTAL_TIME;
 };
 
 export const handleGameStarting = () => setNotif("Game will be starting soon.");
+
+export const handleTimerRunning = ({ sendTime }) => {
+  statusTime.innerText = "";
+  statusTime.innerText = sendTime;
+};
