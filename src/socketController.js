@@ -18,7 +18,7 @@ const socketController = (socket, io) => {
   const broadcast = (event, data) => socket.broadcast.emit(event, data);
   const superBroadcast = (event, data) => io.emit(event, data);
   const sendPlayerUpdate = () =>
-    superBroadcast(events.playerUpdate, { sockets });
+    superBroadcast(events.playerUpdate, { sockets, TOTAL_TIME });
   const timeReduce = () => {
     timerTime += 1;
     const sendTime = TOTAL_TIME - timerTime;
@@ -32,6 +32,7 @@ const socketController = (socket, io) => {
         word = chooseWord();
         superBroadcast(events.gameStarting);
         setTimeout(() => {
+          clearInterval(timerInterval);
           superBroadcast(events.gameStarted);
           io.to(leader.id).emit(events.leaderNotif, { word });
           timeout = setTimeout(endGame, 1000 * TOTAL_TIME);

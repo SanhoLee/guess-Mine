@@ -10,6 +10,7 @@ import { disableChat, enableChat } from "./chat";
 const board = document.getElementById("jsPBoard");
 const notifs = document.getElementById("jsNotifs");
 const statusTime = document.getElementById("jsStatusTime");
+const playerNumber = document.getElementById("jsPlayerNumber");
 
 const setNotif = (text) => {
   notifs.innerText = " ";
@@ -21,21 +22,35 @@ const setTimerTime = (text) => {
   statusTime.innerText = text;
 };
 
+const setPlayerNumber = (sockets) => {
+  playerNumber.innerText = "";
+  playerNumber.innerText = String(sockets.length);
+};
+
 const addPlayers = (players) => {
   board.innerHTML = "";
   players.forEach((player) => {
-    const playerElement = document.createElement("span");
-    playerElement.innerText = `${player.nickname} 🤑 ${player.points}`;
+    const playerElement = document.createElement("div");
+    playerElement.className = "player__element";
+    const pointElement = document.createElement("span");
+    const nicknameElement = document.createElement("span");
+    pointElement.innerText = `🤑 ${player.points} 🤑`;
+    nicknameElement.innerText = `${player.nickname}`;
+    playerElement.appendChild(pointElement);
+    playerElement.appendChild(nicknameElement);
     board.appendChild(playerElement);
   });
 };
 
-export const handlePlayerUpdate = ({ sockets }) => {
-  if (sockets.length === 1) {
-    setNotif("Waiting Painters 👨🏻‍🎨👩🏻‍🎨 ");
-  }
+export const handlePlayerUpdate = ({ sockets, TOTAL_TIME }) => {
   hideControls();
   addPlayers(sockets);
+  setPlayerNumber(sockets);
+  if (sockets.length === 1) {
+    setNotif("Waiting Painters 👨🏻‍🎨👩🏻‍🎨 ");
+    disableChat();
+  }
+  setTimerTime(TOTAL_TIME);
 };
 export const handleGameStarted = () => {
   setNotif("Guess What ? ");
@@ -55,6 +70,7 @@ export const handleLeaderNotif = ({ word }) => {
 export const handleGameEnded = ({ TOTAL_TIME }) => {
   setNotif("Game Ended ! ");
   disableCanvas();
+  disableChat();
   hideControls();
   resetCanvas();
   setTimerTime(TOTAL_TIME);

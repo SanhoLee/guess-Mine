@@ -16,20 +16,19 @@
     }
   }
   .player__list {
-    display: flex;
-    flex-direction: column;
-    width: max-content;
-    span {
-      padding: 10px 5px;
-      box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
-        0 3px 6px rgba(0, 0, 0, 0.08);
-      background-color: white;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 5px;
+    margin-bottom: 10px;
+    .player__element {
       width: 100%;
-      &:last-child {
-        margin-bottom: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0 3px 36px rgba(2, 2, 2, 0.1), 0 5px 15px rgba(0, 0, 0, 0.7);
+      margin-bottom: 10px;
+      span {
+        padding: 10px 5px;
+        text-align: center;
+        width: 100%;
       }
     }
   }
