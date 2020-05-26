@@ -34,10 +34,10 @@ const addPlayers = (players) => {
     playerElement.className = "player__element";
     const pointElement = document.createElement("span");
     const nicknameElement = document.createElement("span");
-    pointElement.innerText = `🤑 ${player.points} 🤑`;
     nicknameElement.innerText = `${player.nickname}`;
-    playerElement.appendChild(pointElement);
+    pointElement.innerText = `👑  ${player.points}`;
     playerElement.appendChild(nicknameElement);
+    playerElement.appendChild(pointElement);
     board.appendChild(playerElement);
   });
 };

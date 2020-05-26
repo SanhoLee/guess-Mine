@@ -7,25 +7,29 @@ html(lang="en")
         link(rel="stylesheet", href="/styles/styles.css")
         title Guess-Mine
     body
-        +paintCanvas()
-        .loginBox
-            form#jsLogin
-                input(type="text", placeholder="Whats your nickname ?")
-        .gameContainer#jsGame
-            .statusNotif
-                span ⏰🧨💣
-                span :
-                span#jsStatusTime 00
-            .chat
-                ul.chat__message#jsMessage
-                form.chat__form#jsSendMsg
-                    input(placeholder="Write a Message.", type="text")
-        .player__board 
-            .player__number 
-                span 👨🏻‍💻👩🏻‍💻
-                span :
-                span#jsPlayerNumber 2
-            .player__list#jsPBoard
+            +paintCanvas()
+            .loginBox
+                form#jsLogin
+                    input(type="text", placeholder="Whats your nickname ?")
+            .gameContainer#jsGame
+                .head__button.start
+                    span Start
+                .statusNotif
+                    span ⏰🧨💣
+                    span :
+                    span#jsStatusTime 00
+                .chat
+                    ul.chat__message#jsMessage
+                    form.chat__form#jsSendMsg
+                        input(placeholder="Write a Message.", type="text")
+            .player__board 
+                .head__button.ready
+                    span Ready
+                .player__number 
+                    span 👨🏻‍💻👩🏻‍💻
+                    span :
+                    span#jsPlayerNumber 2
+                .player__list#jsPBoard
     script.
         window.events = !{events}
     script(src="/socket.io/socket.io.js")

@@ -1,5 +1,5 @@
 .player__board {
-  margin-top: 50px;
+  // margin-top: 50px;
   margin-left: 30px;
   height: 100%;
   width: 180px;
@@ -20,7 +20,7 @@
     .player__element {
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
       border-radius: 10px;
       background-color: white;
       box-shadow: 0 3px 36px rgba(2, 2, 2, 0.1), 0 5px 15px rgba(0, 0, 0, 0.7);
@@ -28,7 +28,6 @@
       span {
         padding: 10px 5px;
         text-align: center;
-        width: 100%;
       }
     }
   }
