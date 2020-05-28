@@ -72,10 +72,15 @@ const socketController = (socket, io) => {
 
   socket.on(events.setNickname, ({ nickname }) => {
     socket.nickname = nickname;
-    sockets.push({ id: socket.id, points: 0, nickname: socket.nickname });
+    sockets.push({
+      id: socket.id,
+      points: 0,
+      nickname: socket.nickname,
+      ready: false,
+    });
     broadcast(events.newUser, { nickname });
     sendPlayerUpdate();
-    startGame();
+    // startGame();
   });
   socket.on(events.disconnect, () => {
     sockets = sockets.filter((potato) => potato.id != socket.id);
@@ -110,6 +115,9 @@ const socketController = (socket, io) => {
   });
   socket.on(events.fill, ({ color }) => {
     broadcast(events.filled, { color });
+  });
+  socket.on(events.readyBtn, ({ readyClass }) => {
+    console.log(`Ready Status with ${socket.nickname} : ${readyClass}`);
   });
 };
 

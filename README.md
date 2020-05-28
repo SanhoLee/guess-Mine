@@ -9,7 +9,7 @@ Realtime Drawing Game built with SocketIO, Gulp and Node
 - [x] Static
 - [x] SocketIO
 - [ ] Condition for Game Start : Ready or Not
-- [ ] Button for Start and Ready
+- [x] Button for Start and Ready
 - [ ] UserDetail : Click to detail(Win score)
 - [x] 🤑 -> 👑
 - [ ] Front-end for Notification Bar(above Canvas)

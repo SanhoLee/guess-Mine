@@ -19,6 +19,7 @@ const events = {
   gameEnded: "gameEnded",
   gameStarting: "gameStarting",
   timerRunning: "timerRunning",
+  readyBtn: "readyBtn",
 };
 
 export default events;

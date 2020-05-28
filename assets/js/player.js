@@ -1,16 +1,22 @@
+import { disableChat, enableChat } from "./chat";
 import {
   disableCanvas,
-  hideControls,
   enableCanvas,
-  showControls,
+  hideControls,
   resetCanvas,
+  showControls,
 } from "./paint";
-import { disableChat, enableChat } from "./chat";
+import { getSocket } from "./sockets";
 
 const board = document.getElementById("jsPBoard");
 const notifs = document.getElementById("jsNotifs");
 const statusTime = document.getElementById("jsStatusTime");
 const playerNumber = document.getElementById("jsPlayerNumber");
+const readyBtn = document.getElementById("jsReadyBtn");
+
+const ON_READY = "ready";
+const NOT_READY = "notReady";
+const START = "start";
 
 const setNotif = (text) => {
   notifs.innerText = " ";
@@ -81,3 +87,40 @@ export const handleGameStarting = () => setNotif("Game will be starting soon.");
 export const handleTimerRunning = ({ sendTime }) => {
   setTimerTime(sendTime);
 };
+
+export const sendReadyBtn = (readyStatus) => {
+  console.log(readyStatus);
+};
+
+const sendReadyStatus = (readyClass) => {
+  getSocket().emit(window.events.readyBtn, { readyClass });
+};
+
+const readyStatus = (classList) => {
+  const len = classList.length;
+  const targetClass = classList[len - 1];
+  if (targetClass === NOT_READY) {
+    readyBtn.innerText = "Perfect !";
+    classList.remove(NOT_READY);
+    classList.add(ON_READY);
+  } else if (targetClass === ON_READY) {
+    readyBtn.innerText = "Click to Ready !";
+    classList.remove(ON_READY);
+    classList.add(NOT_READY);
+  }
+  const currentReadyClass = classList[len - 1];
+  sendReadyStatus(currentReadyClass);
+};
+
+const handleReadyBtn = (event) => {
+  const {
+    target: { classList },
+  } = event;
+  readyStatus(classList);
+
+  // const readyStaus = null;
+};
+
+if (readyBtn) {
+  readyBtn.addEventListener("click", handleReadyBtn);
+}

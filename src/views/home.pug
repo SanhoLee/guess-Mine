@@ -12,8 +12,7 @@ html(lang="en")
                 form#jsLogin
                     input(type="text", placeholder="Whats your nickname ?")
             .gameContainer#jsGame
-                .head__button.start
-                    span Start
+                button.head__button.notReady#jsReadyBtn Click to Ready !
                 .statusNotif
                     span ⏰🧨💣
                     span :
@@ -23,8 +22,6 @@ html(lang="en")
                     form.chat__form#jsSendMsg
                         input(placeholder="Write a Message.", type="text")
             .player__board 
-                .head__button.ready
-                    span Ready
                 .player__number 
                     span 👨🏻‍💻👩🏻‍💻
                     span :
