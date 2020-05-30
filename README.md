@@ -8,7 +8,7 @@ Realtime Drawing Game built with SocketIO, Gulp and Node
 - [x] Pug
 - [x] Static
 - [x] SocketIO
-- [ ] Condition for Game Start : Ready or Not
+- [x] Condition for Game Start : Ready or Not
 - [x] Button for Start and Ready
 - [ ] UserDetail : Click to detail(Win score)
 - [x] 🤑 -> 👑

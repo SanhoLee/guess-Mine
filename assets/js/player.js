@@ -48,6 +48,18 @@ const addPlayers = (players) => {
   });
 };
 
+const toReady = (classList) => {
+  readyBtn.innerText = "Perfect !";
+  classList.remove(NOT_READY);
+  classList.add(ON_READY);
+};
+
+const toNotReady = (classList) => {
+  readyBtn.innerText = "Click to Ready !";
+  classList.remove(ON_READY);
+  classList.add(NOT_READY);
+};
+
 export const handlePlayerUpdate = ({ sockets, TOTAL_TIME }) => {
   hideControls();
   addPlayers(sockets);
@@ -57,6 +69,7 @@ export const handlePlayerUpdate = ({ sockets, TOTAL_TIME }) => {
     disableChat();
   }
   setTimerTime(TOTAL_TIME);
+  const readyUser = sockets.filter((user) => user.ready === true);
 };
 export const handleGameStarted = () => {
   setNotif("Guess What ? ");
@@ -80,16 +93,13 @@ export const handleGameEnded = ({ TOTAL_TIME }) => {
   hideControls();
   resetCanvas();
   setTimerTime(TOTAL_TIME);
+  toNotReady(readyBtn.classList);
 };
 
 export const handleGameStarting = () => setNotif("Game will be starting soon.");
 
 export const handleTimerRunning = ({ sendTime }) => {
   setTimerTime(sendTime);
-};
-
-export const sendReadyBtn = (readyStatus) => {
-  console.log(readyStatus);
 };
 
 const sendReadyStatus = (readyClass) => {
@@ -100,13 +110,9 @@ const readyStatus = (classList) => {
   const len = classList.length;
   const targetClass = classList[len - 1];
   if (targetClass === NOT_READY) {
-    readyBtn.innerText = "Perfect !";
-    classList.remove(NOT_READY);
-    classList.add(ON_READY);
+    toReady(classList);
   } else if (targetClass === ON_READY) {
-    readyBtn.innerText = "Click to Ready !";
-    classList.remove(ON_READY);
-    classList.add(NOT_READY);
+    toNotReady(classList);
   }
   const currentReadyClass = classList[len - 1];
   sendReadyStatus(currentReadyClass);

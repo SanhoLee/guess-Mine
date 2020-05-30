@@ -32,5 +32,3 @@ export const initSockets = (aSocket) => {
   socket.on(events.gameStarting, handleGameStarting);
   socket.on(events.timerRunning, handleTimerRunning);
 };
-
-// 상대방 유저에게 연결해서 뭔가 액션을 표시하기 위해서는, initSockets에서 window.events로 들어오는 이벤트를 통해서 전달되야한다.

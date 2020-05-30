@@ -20,6 +20,7 @@ const events = {
   gameStarting: "gameStarting",
   timerRunning: "timerRunning",
   readyBtn: "readyBtn",
+  onReady: "onReady",
 };
 
 export default events;
