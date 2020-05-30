@@ -10,6 +10,7 @@ let leader = null;
 let timeout = null;
 let timerTime = 0;
 let timerInterval = null;
+let readyUser = [];
 
 const chooseLeader = () => sockets[Math.floor(Math.random() * sockets.length)];
 
@@ -25,28 +26,30 @@ const socketController = (socket, io) => {
     superBroadcast(events.timerRunning, { sendTime });
   };
   const resetReadyStatus = () => sockets.map((item) => (item.ready = false));
+  const getReadyUser = () => sockets.filter((item) => item.ready === true);
+  const leaderReady = () =>
+    io.to(leader.id).emit(events.leaderNotif, { word, leader });
+
+  const startGameControl = () => {
+    // setTimeout(() => {
+    //   clearInterval(timerInterval);
+    //   superBroadcast(events.gameStarted);
+    //   timeout = setTimeout(endGame, 1000 * TOTAL_TIME);
+    //   timerTime = 0;
+    //   timerInterval = setInterval(timeReduce, 1000);
+    // }, 5000);
+  };
+
   const startGame = () => {
     if (sockets.length > 1) {
       if (inProgress === false) {
         inProgress = true;
-        leader = chooseLeader();
-        word = chooseWord();
-        const readyUser = sockets.filter((item) => item.ready === true);
+        readyUser = getReadyUser();
         // check ready status for all User.
         if (sockets.length - 1 === readyUser.length) {
           // To do :  activateStart() function for Leader
           superBroadcast(events.gameStarting);
-          setTimeout(() => {
-            clearInterval(timerInterval);
-            superBroadcast(events.gameStarted);
-            io.to(leader.id).emit(events.leaderNotif, { word });
-            timeout = setTimeout(endGame, 1000 * TOTAL_TIME);
-            // timeout will be has specific id for setTimeout.
-            // it could be deleted by clearTimeout(ThatId) method.
-            timerTime = 0;
-            timerInterval = setInterval(timeReduce, 1000);
-          }, 5000);
-          resetReadyStatus();
+          startGameControl();
         }
       }
     }
@@ -62,7 +65,7 @@ const socketController = (socket, io) => {
       clearInterval(timerInterval);
       timerTime = 0;
     }
-    // setTimeout(startGame, 2000);
+    resetReadyStatus();
   };
 
   const addPoints = (id) => {
@@ -87,6 +90,11 @@ const socketController = (socket, io) => {
     });
     broadcast(events.newUser, { nickname });
     sendPlayerUpdate();
+    if (sockets.length > 1) {
+      word = chooseWord();
+      leader = chooseLeader();
+      leaderReady();
+    }
   });
   socket.on(events.disconnect, () => {
     sockets = sockets.filter((potato) => potato.id != socket.id);

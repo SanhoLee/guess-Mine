@@ -13,3 +13,4 @@ Realtime Drawing Game built with SocketIO, Gulp and Node
 - [ ] UserDetail : Click to detail(Win score)
 - [x] 🤑 -> 👑
 - [ ] Front-end for Notification Bar(above Canvas)
+- [ ] Deploy on Heroku.
