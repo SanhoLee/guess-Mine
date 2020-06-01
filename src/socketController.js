@@ -27,7 +27,7 @@ const socketController = (socket, io) => {
   };
   const resetReadyStatus = () => sockets.map((item) => (item.ready = false));
   const getReadyUser = () => sockets.filter((item) => item.ready === true);
-  const leaderReady = () =>
+  const leaderStandby = () =>
     io.to(leader.id).emit(events.leaderNotif, { word, leader });
 
   const startGameControl = () => {
@@ -47,9 +47,10 @@ const socketController = (socket, io) => {
         readyUser = getReadyUser();
         // check ready status for all User.
         if (sockets.length - 1 === readyUser.length) {
-          // To do :  activateStart() function for Leader
           superBroadcast(events.gameStarting);
-          startGameControl();
+          // To do :  activateStart() function for Leader
+          io.to(leader.id).emit(events.readyCompleted);
+          // startGameControl();
         }
       }
     }
@@ -93,7 +94,7 @@ const socketController = (socket, io) => {
     if (sockets.length > 1) {
       word = chooseWord();
       leader = chooseLeader();
-      leaderReady();
+      leaderStandby();
     }
   });
   socket.on(events.disconnect, () => {
@@ -142,6 +143,11 @@ const socketController = (socket, io) => {
       return item;
     });
     sendPlayerUpdate();
+
+    // 여기서, 레디 액션에 따라서 스타트 버튼을 바꿔주는 기능을 추가하는게 좋을 것 같음
+    // 즉, io.to를 이용할 것, startgame에 있는걸 여길로내려서 활용할 방법을 찾아....
+
+    console.log(getReadyUser().length);
     startGame();
   });
 };

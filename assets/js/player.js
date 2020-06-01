@@ -17,6 +17,7 @@ const readyBtn = document.getElementById("jsReadyBtn");
 const ON_READY = "ready";
 const NOT_READY = "notReady";
 const START = "start";
+const ALLOW_START = "allowStart";
 const GAMING = "gaming";
 
 const setNotif = (text) => {
@@ -62,15 +63,22 @@ const toNotReady = (classList) => {
 };
 
 const toStart = (classList) => {
-  readyBtn.innerText = " START🕹 ";
+  readyBtn.innerText = " START 🚫 ";
   classList.remove(NOT_READY);
   classList.add(START);
   readyBtn.style.backgroundColor = "#bbff00";
 };
 
+const toAllowStart = (classList) => {
+  readyBtn.innerText = " START 🕹 ";
+  classList.remove(START);
+  classList.add(ALLOW_START);
+  readyBtn.style.backgroundColor = "#74b9ff";
+};
+
 const toGame = (classList) => {
   readyBtn.innerText = " Game-ing 🖼 ";
-  classList.remove(START);
+  classList.remove(ALLOW_START);
   classList.add(GAMING);
   readyBtn.style.backgroundColor = "red";
 };
@@ -95,7 +103,7 @@ export const handleGameStarted = () => {
 export const handleLeaderNotif = ({ word, leader }) => {
   // This is only for leader Browser.
   toStart(readyBtn.classList);
-  // readyBtn.removeEventListener("click", handleReadyBtn);
+  readyBtn.removeEventListener("click", handleReadyBtn);
   setNotif("");
   notifs.innerText = `${leader.nickname} are Leader, Paint : ${word}`;
 };
@@ -123,19 +131,23 @@ const sendReadyStatus = (readyClass) => {
 const readyStatus = (classList) => {
   const len = classList.length;
   let targetClass = classList[len - 1];
-  if (targetClass === START) {
-    toGame(classList);
-  } else if (targetClass === GAMING) {
-    toStart(classList);
-  } else {
-    if (targetClass === NOT_READY) {
-      toReady(classList);
-    } else if (targetClass === ON_READY) {
-      toNotReady(classList);
-    }
+  if (targetClass === NOT_READY) {
+    toReady(classList);
+  } else if (targetClass === ON_READY) {
+    toNotReady(classList);
   }
   targetClass = classList[len - 1];
   sendReadyStatus(targetClass);
+};
+
+const startStatus = (classList) => {
+  const len = classList.length;
+  let targetClass = classList[len - 1];
+  if (targetClass === ALLOW_START) {
+    toGame(classList);
+  } else if (targetClass === GAMING) {
+    readyBtn.removeEventListener("click", handleReadyBtn);
+  }
 };
 
 const handleReadyBtn = (event) => {
@@ -143,6 +155,18 @@ const handleReadyBtn = (event) => {
     target: { classList },
   } = event;
   readyStatus(classList);
+};
+
+const handleStartBtn = (event) => {
+  const {
+    target: { classList },
+  } = event;
+  startStatus(classList);
+};
+
+export const handleGameActive = () => {
+  toAllowStart(readyBtn.classList);
+  readyBtn.addEventListener("click", handleStartBtn);
 };
 
 if (readyBtn) {
