@@ -52,35 +52,36 @@ const addPlayers = (players) => {
 
 const toReady = (classList) => {
   readyBtn.innerText = "ON READY 🔒";
-  classList.remove(NOT_READY);
+  classList.remove(classList[classList.length - 1]);
   classList.add(ON_READY);
 };
 
 const toNotReady = (classList) => {
   readyBtn.innerText = "NOT READY 🔓";
-  classList.remove(ON_READY);
+  classList.remove(classList[classList.length - 1]);
   classList.add(NOT_READY);
 };
 
 const toStart = (classList) => {
   readyBtn.innerText = " START 🚫 ";
-  classList.remove(NOT_READY);
+  classList.remove(classList[classList.length - 1]);
   classList.add(START);
   readyBtn.style.backgroundColor = "#bbff00";
 };
 
 const toAllowStart = (classList) => {
   readyBtn.innerText = " START 🕹 ";
-  classList.remove(START);
+  classList.remove(classList[classList.length - 1]);
   classList.add(ALLOW_START);
   readyBtn.style.backgroundColor = "#74b9ff";
 };
 
 const toGame = (classList) => {
   readyBtn.innerText = " Game-ing 🖼 ";
-  classList.remove(ALLOW_START);
+  classList.remove(classList[classList.length - 1]);
   classList.add(GAMING);
   readyBtn.style.backgroundColor = "red";
+  getSocket().emit(window.events.startBtnClicked);
 };
 
 export const handlePlayerUpdate = ({ sockets, TOTAL_TIME }) => {
@@ -119,7 +120,6 @@ export const handleGameEnded = ({ TOTAL_TIME }) => {
 };
 
 export const handleGameStarting = () => setNotif("Game will be starting soon.");
-
 export const handleTimerRunning = ({ sendTime }) => {
   setTimerTime(sendTime);
 };
@@ -164,9 +164,14 @@ const handleStartBtn = (event) => {
   startStatus(classList);
 };
 
-export const handleGameActive = () => {
-  toAllowStart(readyBtn.classList);
-  readyBtn.addEventListener("click", handleStartBtn);
+export const handleChangeStart = (readyUser) => {
+  if (board.childElementCount - 1 === readyUser.length) {
+    toAllowStart(readyBtn.classList);
+    readyBtn.addEventListener("click", handleStartBtn);
+  } else {
+    toStart(readyBtn.classList);
+    readyBtn.removeEventListener("click", handleStartBtn);
+  }
 };
 
 if (readyBtn) {

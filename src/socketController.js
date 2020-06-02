@@ -31,27 +31,21 @@ const socketController = (socket, io) => {
     io.to(leader.id).emit(events.leaderNotif, { word, leader });
 
   const startGameControl = () => {
-    // setTimeout(() => {
-    //   clearInterval(timerInterval);
-    //   superBroadcast(events.gameStarted);
-    //   timeout = setTimeout(endGame, 1000 * TOTAL_TIME);
-    //   timerTime = 0;
-    //   timerInterval = setInterval(timeReduce, 1000);
-    // }, 5000);
+    setTimeout(() => {
+      clearInterval(timerInterval);
+      broadcast(events.gameStarted);
+      timeout = setTimeout(endGame, 1000 * TOTAL_TIME);
+      timerTime = 0;
+      timerInterval = setInterval(timeReduce, 1000);
+    }, 5000);
   };
 
   const startGame = () => {
     if (sockets.length > 1) {
       if (inProgress === false) {
         inProgress = true;
-        readyUser = getReadyUser();
-        // check ready status for all User.
-        if (sockets.length - 1 === readyUser.length) {
-          superBroadcast(events.gameStarting);
-          // To do :  activateStart() function for Leader
-          io.to(leader.id).emit(events.readyCompleted);
-          // startGameControl();
-        }
+        superBroadcast(events.gameStarting);
+        startGameControl();
       }
     }
   };
@@ -143,11 +137,10 @@ const socketController = (socket, io) => {
       return item;
     });
     sendPlayerUpdate();
-
-    // 여기서, 레디 액션에 따라서 스타트 버튼을 바꿔주는 기능을 추가하는게 좋을 것 같음
-    // 즉, io.to를 이용할 것, startgame에 있는걸 여길로내려서 활용할 방법을 찾아....
-
-    console.log(getReadyUser().length);
+    readyUser = getReadyUser();
+    io.to(leader.id).emit(events.readyChanged, readyUser);
+  });
+  socket.on(events.startBtnClicked, () => {
     startGame();
   });
 };

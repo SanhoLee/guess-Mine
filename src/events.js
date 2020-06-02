@@ -21,7 +21,8 @@ const events = {
   timerRunning: "timerRunning",
   readyBtn: "readyBtn",
   onReady: "onReady",
-  readyCompleted: "readyCompleted",
+  readyChanged: "readyChanged",
+  startBtnClicked: "startBtnClicked",
 };
 
 export default events;
