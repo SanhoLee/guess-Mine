@@ -20,6 +20,18 @@ const START = "start";
 const ALLOW_START = "allowStart";
 const GAMING = "gaming";
 
+export const removeReadyBtnEvent = () =>
+  readyBtn.removeEventListener("click", handleReadyBtn);
+
+export const addReadyBtnEvent = () =>
+  readyBtn.addEventListener("click", handleReadyBtn);
+
+const removeReadyBtnEventLD = () =>
+  readyBtn.removeEventListener("click", handleStartBtn);
+
+const addReadyBtnEventLD = () =>
+  readyBtn.addEventListener("click", handleStartBtn);
+
 const setNotif = (text) => {
   notifs.innerText = " ";
   notifs.innerText = text;
@@ -60,6 +72,7 @@ const toNotReady = (classList) => {
   readyBtn.innerText = "NOT READY 🔓";
   classList.remove(classList[classList.length - 1]);
   classList.add(NOT_READY);
+  readyBtn.style.backgroundColor = "#bbff00";
 };
 
 const toStart = (classList) => {
@@ -100,15 +113,24 @@ export const handleGameStarted = () => {
   disableCanvas();
   hideControls();
   enableChat();
+  removeReadyBtnEvent();
 };
 export const handleLeaderNotif = ({ word, leader }) => {
-  // This is only for leader Browser.
   toStart(readyBtn.classList);
-  readyBtn.removeEventListener("click", handleReadyBtn);
+  enableChat();
+  removeReadyBtnEvent();
   setNotif("");
-  notifs.innerText = `${leader.nickname} are Leader, Paint : ${word}`;
+  notifs.innerText = `${leader.nickname} are Painter ! 🖌 `;
 };
 
+export const handleLeaderStartSet = ({ word, leader }) => {
+  setNotif(`DRAW THIS WORD 🖼 : ${word}`);
+  disableChat();
+  showControls();
+  enableCanvas();
+};
+
+// This is for normal User
 export const handleGameEnded = ({ TOTAL_TIME }) => {
   setNotif("Game Ended ! ");
   disableCanvas();
@@ -117,9 +139,13 @@ export const handleGameEnded = ({ TOTAL_TIME }) => {
   resetCanvas();
   setTimerTime(TOTAL_TIME);
   toNotReady(readyBtn.classList);
+  addReadyBtnEvent();
 };
 
-export const handleGameStarting = () => setNotif("Game will be starting soon.");
+export const handleGameStarting = () => {
+  removeReadyBtnEvent();
+  setNotif("Game will be starting soon.");
+};
 export const handleTimerRunning = ({ sendTime }) => {
   setTimerTime(sendTime);
 };
@@ -146,7 +172,7 @@ const startStatus = (classList) => {
   if (targetClass === ALLOW_START) {
     toGame(classList);
   } else if (targetClass === GAMING) {
-    readyBtn.removeEventListener("click", handleReadyBtn);
+    removeReadyBtnEvent();
   }
 };
 
@@ -167,13 +193,13 @@ const handleStartBtn = (event) => {
 export const handleChangeStart = (readyUser) => {
   if (board.childElementCount - 1 === readyUser.length) {
     toAllowStart(readyBtn.classList);
-    readyBtn.addEventListener("click", handleStartBtn);
+    addReadyBtnEventLD();
   } else {
     toStart(readyBtn.classList);
-    readyBtn.removeEventListener("click", handleStartBtn);
+    removeReadyBtnEventLD();
   }
 };
 
 if (readyBtn) {
-  readyBtn.addEventListener("click", handleReadyBtn);
+  addReadyBtnEvent();
 }

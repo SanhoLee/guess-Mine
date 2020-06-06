@@ -27,17 +27,31 @@ const socketController = (socket, io) => {
   };
   const resetReadyStatus = () => sockets.map((item) => (item.ready = false));
   const getReadyUser = () => sockets.filter((item) => item.ready === true);
-  const leaderStandby = () =>
-    io.to(leader.id).emit(events.leaderNotif, { word, leader });
+  const randomLeader = () => {
+    word = chooseWord();
+    leader = chooseLeader();
+    leaderStandby();
+    return word, leader;
+  };
+  const leaderStandby = () => {
+    if (leader) {
+      io.to(leader.id).emit(events.leaderNotif, { word, leader });
+    }
+  };
+
+  // To do : 위에서 처리하고 있는 단어 전달하고, 리더이름 전달을 아래 leaderStartSet으로 치환해서, 게임이 시작되서 시간이 카운트 되면서, 단어를 전달하는게 좋을듯.
+  const leaderStartSet = () =>
+    io.to(leader.id).emit(events.leaderStartSet, { word, leader });
 
   const startGameControl = () => {
     setTimeout(() => {
       clearInterval(timerInterval);
+      leaderStartSet();
       broadcast(events.gameStarted);
       timeout = setTimeout(endGame, 1000 * TOTAL_TIME);
       timerTime = 0;
       timerInterval = setInterval(timeReduce, 1000);
-    }, 5000);
+    }, 3000);
   };
 
   const startGame = () => {
@@ -53,14 +67,13 @@ const socketController = (socket, io) => {
   const endGame = () => {
     inProgress = false;
     superBroadcast(events.gameEnded, { TOTAL_TIME });
-    if (timeout != null) {
+    if (timeout != null || timerInterval != null) {
       clearTimeout(timeout);
-    }
-    if (timerInterval != null) {
       clearInterval(timerInterval);
       timerTime = 0;
     }
     resetReadyStatus();
+    setTimeout(randomLeader, 2000);
   };
 
   const addPoints = (id) => {
@@ -85,10 +98,8 @@ const socketController = (socket, io) => {
     });
     broadcast(events.newUser, { nickname });
     sendPlayerUpdate();
-    if (sockets.length > 1) {
-      word = chooseWord();
-      leader = chooseLeader();
-      leaderStandby();
+    if (sockets.length > 1 && leader === null) {
+      randomLeader();
     }
   });
   socket.on(events.disconnect, () => {
@@ -112,6 +123,7 @@ const socketController = (socket, io) => {
         nickname: "Bot",
       });
       addPoints(socket.id);
+      endGame();
     } else {
       broadcast(events.newMsg, { message, nickname: socket.nickname });
     }
@@ -138,7 +150,9 @@ const socketController = (socket, io) => {
     });
     sendPlayerUpdate();
     readyUser = getReadyUser();
-    io.to(leader.id).emit(events.readyChanged, readyUser);
+    if (leader) {
+      io.to(leader.id).emit(events.readyChanged, readyUser);
+    }
   });
   socket.on(events.startBtnClicked, () => {
     startGame();

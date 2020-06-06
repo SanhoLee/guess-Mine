@@ -15,6 +15,7 @@ const events = {
   filled: "filled",
   playerUpdate: "playerUpdate",
   leaderNotif: "leaderNotif",
+  leaderStartSet: "leaderStartSet",
   gameStarted: "gameStarted",
   gameEnded: "gameEnded",
   gameStarting: "gameStarting",
