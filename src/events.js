@@ -16,6 +16,7 @@ const events = {
   playerUpdate: "playerUpdate",
   leaderNotif: "leaderNotif",
   leaderStartSet: "leaderStartSet",
+  userStandBy: "userStandBy",
   gameStarted: "gameStarted",
   gameEnded: "gameEnded",
   gameStarting: "gameStarting",

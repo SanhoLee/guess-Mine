@@ -7,6 +7,7 @@ let sockets = [];
 let inProgress = false;
 let word = null;
 let leader = null;
+let leaderSetTimeout = null;
 let timeout = null;
 let timerTime = 0;
 let timerInterval = null;
@@ -27,17 +28,12 @@ const socketController = (socket, io) => {
   };
   const resetReadyStatus = () => sockets.map((item) => (item.ready = false));
   const getReadyUser = () => sockets.filter((item) => item.ready === true);
-  const randomLeader = () => {
-    word = chooseWord();
-    leader = chooseLeader();
-    leaderStandby();
-    return word, leader;
-  };
   const leaderStandby = () => {
     if (leader) {
       io.to(leader.id).emit(events.leaderNotif, { word, leader });
     }
   };
+  const userStandby = () => broadcast(events.userStandBy);
 
   // To do : 위에서 처리하고 있는 단어 전달하고, 리더이름 전달을 아래 leaderStartSet으로 치환해서, 게임이 시작되서 시간이 카운트 되면서, 단어를 전달하는게 좋을듯.
   const leaderStartSet = () =>
@@ -54,6 +50,15 @@ const socketController = (socket, io) => {
     }, 3000);
   };
 
+  const toWaitGame = (time) => {
+    leaderSetTimeout = setTimeout(() => {
+      word = chooseWord();
+      leader = chooseLeader();
+      userStandby();
+      leaderStandby();
+    }, time * 1000);
+  };
+
   const startGame = () => {
     if (sockets.length > 1) {
       if (inProgress === false) {
@@ -67,13 +72,14 @@ const socketController = (socket, io) => {
   const endGame = () => {
     inProgress = false;
     superBroadcast(events.gameEnded, { TOTAL_TIME });
-    if (timeout != null || timerInterval != null) {
+    if (timeout != null || timerInterval != null || leaderSetTimeout) {
       clearTimeout(timeout);
+      clearTimeout(leaderSetTimeout);
       clearInterval(timerInterval);
       timerTime = 0;
     }
     resetReadyStatus();
-    setTimeout(randomLeader, 2000);
+    sockets.length > 1 && toWaitGame(2);
   };
 
   const addPoints = (id) => {
@@ -98,8 +104,8 @@ const socketController = (socket, io) => {
     });
     broadcast(events.newUser, { nickname });
     sendPlayerUpdate();
-    if (sockets.length > 1 && leader === null) {
-      randomLeader();
+    if (sockets.length > 1) {
+      toWaitGame(2);
     }
   });
   socket.on(events.disconnect, () => {

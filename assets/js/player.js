@@ -123,6 +123,11 @@ export const handleLeaderNotif = ({ word, leader }) => {
   notifs.innerText = `${leader.nickname} are Painter ! 🖌 `;
 };
 
+export const handleUserStandBy = () => {
+  setNotif("You are Not Painter.");
+  enableChat();
+};
+
 export const handleLeaderStartSet = ({ word, leader }) => {
   setNotif(`DRAW THIS WORD 🖼 : ${word}`);
   disableChat();

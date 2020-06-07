@@ -10,6 +10,7 @@ import {
   handleTimerRunning,
   handleChangeStart,
   handleLeaderStartSet,
+  handleUserStandBy,
 } from "./player";
 
 let socket = null;
@@ -30,6 +31,7 @@ export const initSockets = (aSocket) => {
   socket.on(events.gameStarted, handleGameStarted);
   socket.on(events.leaderNotif, handleLeaderNotif);
   socket.on(events.leaderStartSet, handleLeaderStartSet);
+  socket.on(events.userStandBy, handleUserStandBy);
   socket.on(events.readyChanged, handleChangeStart);
   // 리더에게만, leaderNotif 이벤트를 보낼수 있다, 그 이유는 io.to로 리더 Id를 지정해서 이벤트를 emit해주고 있기 때문.
   socket.on(events.gameEnded, handleGameEnded);
