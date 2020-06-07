@@ -1,6 +1,7 @@
 mixin paintCanvas()
     .paintContainer
-        #jsNotifs(style={"font-size":"20px"})
+        .userNotifs
+            span#jsNotifs 
         canvas#jsCanvas.canvas
         .controls#jsControls
             .controls__range

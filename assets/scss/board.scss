@@ -20,7 +20,7 @@
     .player__element {
       width: 100%;
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 2fr 70px;
       border-radius: 10px;
       background-color: white;
       box-shadow: 0 3px 36px rgba(2, 2, 2, 0.1), 0 5px 15px rgba(0, 0, 0, 0.7);
@@ -28,6 +28,9 @@
       span {
         padding: 10px 5px;
         text-align: center;
+      }
+      :nth-child(2) {
+        text-align: left;
       }
     }
   }

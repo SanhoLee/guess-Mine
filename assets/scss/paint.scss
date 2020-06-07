@@ -1,6 +1,20 @@
 .paintContainer {
-  margin-right: 70px;
+  margin-right: 40px;
   height: 100%;
+  .userNotifs {
+    font-size: 20px;
+    span {
+      background-color: #000000;
+      border-radius: 15px;
+      border: solid #ff5722;
+      border-width: 3px;
+      color: #00ff00;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   .canvas {
     width: 500px;
     height: 500px;

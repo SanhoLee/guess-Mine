@@ -55,7 +55,7 @@ const addPlayers = (players) => {
     const pointElement = document.createElement("span");
     const nicknameElement = document.createElement("span");
     nicknameElement.innerText = `${player.nickname}`;
-    pointElement.innerText = `👑  ${player.points}`;
+    pointElement.innerText = `😎 ${player.points}`;
     playerElement.appendChild(nicknameElement);
     playerElement.appendChild(pointElement);
     board.appendChild(playerElement);
@@ -90,7 +90,7 @@ const toAllowStart = (classList) => {
 };
 
 const toGame = (classList) => {
-  readyBtn.innerText = " Game-ing 🖼 ";
+  readyBtn.innerText = " GAME 🖼 ";
   classList.remove(classList[classList.length - 1]);
   classList.add(GAMING);
   readyBtn.style.backgroundColor = "red";
@@ -120,11 +120,11 @@ export const handleLeaderNotif = ({ word, leader }) => {
   enableChat();
   removeReadyBtnEvent();
   setNotif("");
-  notifs.innerText = `${leader.nickname} are Painter ! 🖌 `;
+  notifs.innerText = `You are Painter ! 🖌 : ${leader.nickname} `;
 };
 
 export const handleUserStandBy = () => {
-  setNotif("You are Not Painter.");
+  setNotif("Please Ready . . .");
   enableChat();
 };
 
