@@ -107,3 +107,4 @@ yarn.lock
 package-lock.json
 static
 build
+.env
