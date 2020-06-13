@@ -48,12 +48,12 @@ const styles = () =>
     .pipe(minifyCSS())
     .pipe(gulp.dest(paths.styles.dest));
 
-const watchFile = () => {
-  gulp.watch(paths.styles.watch, styles);
-  gulp.watch(paths.js.watch, js);
-};
+// const watchFile = () => {
+//   gulp.watch(paths.styles.watch, styles);
+//   gulp.watch(paths.js.watch, js);
+// };
 
-const dev = gulp.series(clean, styles, js, watchFile);
+// const dev = gulp.series(clean, styles, js, watchFile);
 
 const build = gulp.series(clean, styles, js);
 
