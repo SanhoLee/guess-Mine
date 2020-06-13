@@ -32,7 +32,7 @@
   },
   "scripts": {
     "dev:server": "nodemon --exec babel-node src/server --ignore src/assets/ --ignore src/static",
-    "build:styles": "gulp && cp src/google.js src/static/js",
+    "build:styles": "gulp && cd src/ && cp google.js src/static/js",
     "build:server": "babel src --out-dir build --ignore 'src/static','src/assets','src/google.js'",
     "copyAll": "cp -R src/static build && cp -R src/views build",
     "build": "npm run build:server && npm run build:styles && npm run copyAll",
