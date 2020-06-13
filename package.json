@@ -31,10 +31,10 @@
     "build:styles": "gulp",
     "build:server": "babel src --out-dir build --ignore 'src/static','src/assets'",
     "copyAll": "cp -R src/static build && cp -R src/views build",
-    "build": "yarn build:server && yarn build:styles && yarn copyAll",
+    "build": "npm run build:server && npm run build:styles && npm run copyAll",
     "prebuild": "rm -rf build",
     "start": "PRODUCTION=true node build/server.js",
-    "prestart": "yarn build"
+    "prestart": "npm run build"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
