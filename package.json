@@ -27,10 +27,17 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
-    "dev:server": "nodemon --exec babel-node src/server --ignore assets/ --ignore src/static",
-    "build:styles": "gulp"
+    "dev:server": "nodemon --exec babel-node src/server --ignore src/assets/ --ignore src/static",
+    "build:styles": "gulp",
+    "build:server": "babel src --out-dir build --ignore 'src/static','src/assets'",
+    "copyAll": "cp -R src/static build && cp -R src/views build",
+    "build": "yarn build:server && yarn build:styles && yarn copyAll",
+    "prebuild": "rm -rf build",
+    "start": "PRODUCTION=true node build/server.js",
+    "prestart": "yarn build"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "prettier": "^2.0.5"

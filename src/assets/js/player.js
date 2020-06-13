@@ -104,6 +104,8 @@ export const handlePlayerUpdate = ({ sockets, TOTAL_TIME }) => {
   if (sockets.length === 1) {
     setNotif("Waiting Painters 👨🏻‍🎨👩🏻‍🎨 ");
     disableChat();
+    disableCanvas();
+    removeReadyBtnEvent();
   }
   setTimerTime(TOTAL_TIME);
   const readyUser = sockets.filter((user) => user.ready === true);

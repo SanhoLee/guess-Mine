@@ -12,15 +12,15 @@ sass.compiler = require("node-sass");
 
 const paths = {
   styles: {
-    src: "assets/scss/styles.scss",
+    src: "src/assets/scss/styles.scss",
     dest: "src/static/styles",
-    watch: "assets/scss/**/*.scss",
+    watch: "src/assets/scss/**/*.scss",
     // watch를 해당 경로의 모든 scss확장자를 갖는 파일로 지정
   },
   js: {
-    src: "assets/js/main.js",
+    src: "src/assets/js/main.js",
     dest: "src/static/js",
-    watch: "assets/js/**/*.js",
+    watch: "src/assets/js/**/*.js",
   },
 };
 
@@ -55,7 +55,7 @@ const watchFile = () => {
 
 const dev = gulp.series(clean, styles, js, watchFile);
 
-export const build = gulp.series(clean, styles, js);
+const build = gulp.series(clean, styles, js);
 
-export default dev;
+export default build;
 // export default하면, gulpfile을 실행시키는걸로 바로 , dev를 실행시키도록 되어있음.
