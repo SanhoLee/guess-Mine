@@ -9,6 +9,7 @@ const appendMsg = (text, nickname) => {
     nickname ? nickname : "You "
   }:</span> ${text}`;
   message.appendChild(li);
+  message.scrollTop = message.scrollHeight - message.clientHeight;
 };
 
 const handleSendMsg = (event) => {
