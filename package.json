@@ -28,7 +28,7 @@
     "nodemon": "^2.0.3",
     "pug": "^2.0.4",
     "shell-quote": "^1.7.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   },
   "scripts": {
     "dev:server": "nodemon --exec babel-node src/server --ignore src/assets/ --ignore src/static",
